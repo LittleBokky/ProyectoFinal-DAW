@@ -19,8 +19,7 @@
 5. [Planificación](#planificación)
 
 ## Introducción
-Este proyecto consta de una página web, creada y dedicada únicamente a la reventa de zapatillas. La página llamada “Re-footwear” se encarga de que los propios usuarios ya registrados en dicha web puedan subir sus propias zapatillas para poder así venderlas a los demás que estén interesados en este mundo. Al seleccionar un producto, los usuarios serán redirigidos a una página detallada que proporcionará información completa sobre el par de zapatillas elegido, incluyendo su estado y características únicas. 
-
+Este proyecto consta de una página web, creada y dedicada únicamente a la reventa de zapatillas. La página llamada “Re-footwear” se encarga de que los propios usuarios ya registrados en dicha web puedan subir sus propias zapatillas para poder así venderlas a los demás que estén interesados en este mundo.
 ## Finalidad
 El propósito central de este proyecto es crear una plataforma web altamente intuitiva que satisfaga las necesidades tanto de los entusiastas de las zapatillas como de los vendedores. La web estará diseñada para proporcionar una experiencia de navegación fluida y accesible para todos los usuarios, desde aquellos que buscan adquirir zapatillas únicas hasta aquellos que desean vender sus pares. A continuación, se destacan ciertos apartados a cumplir:
 
@@ -29,11 +28,13 @@ El propósito central de este proyecto es crear una plataforma web altamente int
 - **Noticias y nuevas existencias:** Al entrar en la página web, habrá una sección de noticias de las nuevas zapatillas que han salido a la venta de las diferentes marcas internacionales.
 
 ## Objetivos
+- **Selección de productos:** Al seleccionar un producto, los usuarios serán redirigidos a una página detallada que proporcionará información completa sobre el par de zapatillas elegido, incluyendo su estado y características únicas. 
+ 
 - **Desarrollo de Funcionalidad de búsqueda por filtro:**  Implementar un sistema de búsqueda que permita a los usuarios encontrar zapatillas específicas según marca, modelo, tamaño, condición, precio, y otros atributos relevantes.  
 
 - **Implementación de Secciones Específicas:** Incluir secciones predefinidas como "Más Populares" para facilitar la exploración y navegación de los usuarios, ayudándoles a descubrir rápidamente los lanzamientos más recientes y populares.
 
-- **Usuarios y sus propios perfiles:** Todos los usuarios tendrán acceso a su propio perfil, el cual puede ser editado e incluirá todo tipo de compras o ventas que hayan sido realizadas, así como las valoraciones.
+- **Usuarios y sus propios perfiles:** Todos los usuarios tendrán acceso a su propio perfil, el cual puede ser editado e incluirá todo tipo de compras o ventas que hayan sido realizadas.
 
 - **Sistema de venta:** Se realizará un sistema de ventas, el cuál será muy sencillo de entender y utilizar, en el que los usuarios podrán vender sus propias zapatillas partiendo de fotografías de las mismas y características principales de ellas.
 
