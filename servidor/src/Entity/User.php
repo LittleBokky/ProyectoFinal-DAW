@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(length: 1000000)]
+    private ?string $avatar = null;
+
+    /**
+     * @var Collection<int, Zapatilla>
+     */
+    #[ORM\OneToMany(targetEntity: Zapatilla::class, mappedBy: 'user')]
+    private Collection $zapatillas;
+
+    public function __construct()
+    {
+        $this->zapatillas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,5 +120,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(string $avatar): static
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Zapatilla>
+     */
+    public function getZapatillas(): Collection
+    {
+        return $this->zapatillas;
+    }
+
+    public function addZapatilla(Zapatilla $zapatilla): static
+    {
+        if (!$this->zapatillas->contains($zapatilla)) {
+            $this->zapatillas->add($zapatilla);
+            $zapatilla->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZapatilla(Zapatilla $zapatilla): static
+    {
+        if ($this->zapatillas->removeElement($zapatilla)) {
+            // set the owning side to null (unless already changed)
+            if ($zapatilla->getUser() === $this) {
+                $zapatilla->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

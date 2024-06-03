@@ -1,5 +1,8 @@
+// login.jsx
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
+import { fetchUserDataUsingToken } from "../utils/userUtils";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +28,8 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to login");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to login");
       }
 
       const data = await response.json();
@@ -34,15 +38,26 @@ const Login = () => {
       const token = data.token;
       const userId = data.user_id;
 
-      // Guardar userSession y token en localStorage
       localStorage.setItem("userSession", userSession);
       localStorage.setItem("user_id", userId);
       localStorage.setItem("token", token);
 
-      // Redirigir al usuario a la página principal
-      window.location.href = "/";
+      Swal.fire({
+        icon: "success",
+        title: `¡Bienvenido a Refootwear, ${userSession}!`,
+        showConfirmButton: false,
+        timer: 2500,
+      }).then(() => {
+        window.location.href = "/";
+      });
+
     } catch (error) {
       console.error("Error:", error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Algo salió mal...",
+        text: "Usuario y/o contraseña incorrectos",
+      });
     }
   };
 

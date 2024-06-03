@@ -21,16 +21,12 @@ class Zapatilla
     #[ORM\Column]
     private ?float $price = null;
 
-    /**
-     * @var Collection<int, ZapatillaImg>
-     */
-    #[ORM\OneToMany(targetEntity: ZapatillaImg::class, mappedBy: 'zapatilla')]
-    private Collection $images;
+    #[ORM\Column(length: 1000000)]
+    private ?string $image = null;
 
-    public function __construct()
-    {
-        $this->images = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'zapatillas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -61,32 +57,26 @@ class Zapatilla
         return $this;
     }
 
-    /**
-     * @return Collection<int, ZapatillaImg>
-     */
-    public function getImages(): Collection
+    public function getImage(): ?string
     {
-        return $this->images;
+        return $this->image;
     }
 
-    public function addImage(ZapatillaImg $image): static
+    public function setImage(string $image): static
     {
-        if (!$this->images->contains($image)) {
-            $this->images->add($image);
-            $image->setZapatilla($this);
-        }
+        $this->image = $image;
 
         return $this;
     }
 
-    public function removeImage(ZapatillaImg $image): static
+    public function getUser(): ?User
     {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getZapatilla() === $this) {
-                $image->setZapatilla(null);
-            }
-        }
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

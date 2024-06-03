@@ -20,35 +20,45 @@ class RegisterController extends AbstractController
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
     }
-
     #[Route('/register', name: 'app_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
-        // Decodificar el JSON enviado en la solicitud
-        $data = json_decode($request->getContent(), true);
-
-        // Obtener el nombre de usuario y contraseña del JSON
-        $username = $data['username'] ?? null;
-        $password = $data['password'] ?? null;
-
-        // Verificar si se enviaron los datos requeridos
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+        $file = $request->files->get('avatar');
+    
         if (!$username || !$password) {
             return new JsonResponse(['error' => 'Username and password are required'], JsonResponse::HTTP_BAD_REQUEST);
         }
-
+    
+        // Procesar la imagen del avatar si está presente
+        $base64Avatar = null;
+        if ($file) {
+            $imageContent = file_get_contents($file->getPathname());
+            $base64Image = base64_encode($imageContent);
+            $imageExtension = $file->guessExtension();
+            $base64Avatar = "data:image/{$imageExtension};base64,{$base64Image}";
+        }
+    
         // Crear una nueva instancia de la entidad User
         $user = new User();
         $user->setUsername($username);
-
+    
         // Hashear la contraseña y establecerla en la entidad User
         $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
         $user->setPassword($hashedPassword);
-
+    
+        // Establecer el avatar en la entidad User
+        if ($base64Avatar) {
+            $user->setAvatar($base64Avatar); // Asumiendo que tienes un setAvatar en la entidad User
+        }
+    
         // Guardar el nuevo usuario en la base de datos
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-
+    
         // Retornar una respuesta JSON
         return new JsonResponse(['message' => 'User registered successfully'], JsonResponse::HTTP_CREATED);
     }
+    
 }

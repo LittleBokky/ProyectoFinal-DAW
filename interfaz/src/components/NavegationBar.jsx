@@ -5,12 +5,15 @@ import SellProduct from './SellProduct'; // Asegúrate de tener el componente Se
 
 const NavigationBar = () => {
     const userSession = localStorage.getItem('userSession');
+    const userName = localStorage.getItem('userName');
     const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('userSession');
         localStorage.removeItem('user_id');
         localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userData');
         navigate('/login');
     };
 
@@ -35,9 +38,11 @@ const NavigationBar = () => {
                     )}
                     {userSession && (
                         <>
-                            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
                             <SellProductButton /> {/* Button for opening SellProduct modal */}
-                            <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
+                            <Nav.Link as={Button} onClick={handleLogout} variant="outline-danger">Logout</Nav.Link>
+                            <Nav.Item className="ml-2">
+                                <Nav.Link as={Link} to="/profile">{userSession}</Nav.Link>
+                            </Nav.Item>
                         </>
                     )}
                 </Nav>
