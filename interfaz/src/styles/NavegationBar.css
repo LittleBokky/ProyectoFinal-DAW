@@ -1,0 +1,35 @@
+/* navigationbar.css */
+
+.navbar { 
+    font-size: 18px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #f8f9fa; /* Cambia el color de fondo de la barra de navegación */
+  }
+  
+  .navbar-brand img {
+    margin-right: 10px; /* Añade margen derecho al logo */
+  }
+  
+  .navbar-nav .nav-link {
+    color: #070708; /* Cambia el color del texto de los enlaces de navegación */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #18c005; /* Cambia el color del texto de los enlaces de navegación al pasar el mouse */
+  }
+  
+  .sell-product-button {
+    margin-left: 10px; /* Añade margen izquierdo al botón de Sell Product */
+  }
+
+  /* navigationbar.css */
+
+.navbar-nav .nav-link {
+    margin-right: 20px; /* Añade margen derecho para separar los enlaces */
+  }
+/* NavegationBar.css */
+
+.navbar-brand img {
+  margin-left: 15px; /* Ajusta el valor según sea necesario */
+}
+

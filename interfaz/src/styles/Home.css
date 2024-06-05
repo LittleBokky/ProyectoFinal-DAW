@@ -1,0 +1,41 @@
+/* Home.css */
+
+.card {
+    background-color: rgba(193, 238, 230, 0.9); /* Cambia el color de fondo de las tarjetas */
+    border: 2px solid rgb(3, 2, 2); /* Añade un borde blanco a las tarjetas */
+    height: 400px; /* Establece una altura fija para todas las tarjetas */
+    display: flex; /* Usa flexbox para alinear elementos dentro de la tarjeta */
+}
+
+.card-title {
+    font-weight: bold; /* Añade negrita al título de la tarjeta */
+    font-size: 13px;
+}
+
+.card-text {
+    font-size: 13px; /* Ajusta el tamaño del texto en la tarjeta */
+    margin-bottom: 5px; /* Reduce el margen inferior entre los textos */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.card-img-top {
+    flex: 1; /* La imagen ocupará el 50% del espacio disponible */
+    object-fit: cover; /* Hace que la imagen se ajuste al contenedor manteniendo su relación de aspecto */
+}
+
+.card-body {
+    flex: 1; /* El cuerpo de la tarjeta ocupará el otro 50% del espacio disponible */
+    padding: 10px; /* Añade relleno al cuerpo de la tarjeta */
+    box-sizing: border-box; /* Incluye el relleno en el tamaño total del elemento */
+}
+
+.row {
+    margin-left: -15px; /* Corrige el margen negativo por defecto de la fila */
+    margin-right: -15px; /* Corrige el margen negativo por defecto de la fila */
+}
+
+.col {
+    padding-left: 10px; /* Añade relleno a la izquierda de cada columna */
+    padding-right: 10px; /* Añade relleno a la derecha de cada columna */
+    margin-bottom: 10px; /* Añade margen inferior a cada columna */
+}

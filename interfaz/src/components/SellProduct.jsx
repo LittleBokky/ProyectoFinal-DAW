@@ -7,22 +7,42 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [size, setSize] = useState('');
+  const [marca, setMarca] = useState('');
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null); // Estado para almacenar los datos del usuario
+  const [userData, setUserData] = useState(null);
+  const [marcas, setMarcas] = useState([]); 
+
+  const fetchData = async () => {
+    try {
+      const userData = await fetchUserDataUsingToken();
+      setUserData(userData);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setError('Error fetching user data. Please try again.');
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
+    
+
+    const fetchMarcas = async () => {
       try {
-        const userData = await fetchUserDataUsingToken();
-        setUserData(userData);
+          const response = await fetch('http://localhost:8000/marcas');
+          if (response.ok) {
+              const data = await response.json();
+              setMarcas(data);
+          } else {
+              console.error('Error fetching marcas:', response.statusText);
+          }
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Error fetching user data. Please try again.');
+          console.error('Error fetching marcas:', error);
       }
     };
 
     fetchData();
-  }, []); // Ejecutar solo una vez al montar el componente
+    fetchMarcas();
+  }, []); 
 
   const handleImageChange = (e) => {
     if (e.target.files.length > 1) {
@@ -43,12 +63,14 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('price', price);
+    formData.append('size', size);
+    formData.append('marca_id', marca); // Cambiado a 'marca_id'
     if (image) {
       formData.append('image', image);
     }
     formData.append('user_id', userData.id);
 
-    console.log("Submitting form with data:", { name, price, user_id: userData.id });
+    console.log("Submitting form with data:", { name, price, size, marca_id: marca, user_id: userData.id }); // Cambiado a 'marca_id'
 
     try {
       const response = await fetch('http://localhost:8000/sell', {
@@ -58,8 +80,8 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
 
       if (response.ok) {
         console.log('Product listed successfully');
-        updateProducts(); // Call the function to update products list
-        handleClose(); // Close the modal on success
+        handleClose(); 
+        fetchData();
       } else {
         const errorData = await response.json();
         console.error('Error listing product:', errorData);
@@ -99,6 +121,26 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
             />
           </Form.Group>
 
+          <Form.Group controlId="formSize">
+            <Form.Label>Size</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter product size"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formMarca">
+            <Form.Label>Marca</Form.Label>
+            <Form.Control as="select" value={marca} onChange={(e) => setMarca(e.target.value)}>
+              <option value="">Selecciona una marca</option>
+              {marcas.map(marca => (
+                <option key={marca.id} value={marca.id}>{marca.name}</option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
           <Form.Group controlId="formImage">
             <Form.Label>Image</Form.Label>
             <Form.Control
@@ -108,9 +150,14 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" disabled={!userData}>
-            List Product
-          </Button>
+          <div className="d-flex justify-content-end">
+            <Button variant="secondary" onClick={handleClose} className="mr-2">
+              Close
+            </Button>
+            <Button variant="primary" type="submit" disabled={!userData}>
+              List Product
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>

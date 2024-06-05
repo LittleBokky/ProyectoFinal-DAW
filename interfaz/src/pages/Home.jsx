@@ -1,7 +1,7 @@
-// home.jsx
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import OptionsButtom from '../components/OptionsButtom';
+import '../styles/Home.css';
 import { editZapatilla, deleteZapatilla, reportZapatilla } from '../utils/zapatillaUtils';
 
 const Home = () => {
@@ -12,7 +12,6 @@ const Home = () => {
             try {
                 const response = await fetch('http://localhost:8000/zapatillas');
                 const data = await response.json();
-                // Suponiendo que los datos incluyen ahora el nombre del usuario
                 setZapatillas(data);
             } catch (error) {
                 console.error('Error fetching zapatillas:', error);
@@ -21,6 +20,9 @@ const Home = () => {
 
         fetchZapatillas();
     }, []);
+
+    // Filtrar las zapatillas por marca
+    const marcaZapatillas = zapatillas.filter(zapatilla => zapatilla.marca === 'Nike');
 
     const handleEdit = (zapatilla) => {
         editZapatilla(zapatilla);
@@ -36,33 +38,33 @@ const Home = () => {
 
     return (
         <Container className="mt-5">
-            <Row>
+            <Row xs={2} sm={2} md={3} lg={3}>
                 {zapatillas.map((zapatilla) => (
-                    <Col key={zapatilla.id} md={4} className="mb-4">
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>{zapatilla.name}</Card.Title>
-                                <Card.Text>
-                                    Price: ${zapatilla.price}
-                                </Card.Text>
-                                <Card.Text>
-                                    Sold by: {zapatilla.user_name} {/* Mostrar el nombre del usuario */}
-                                </Card.Text>
-                                <div>                        
-                                    <img
-                                        src={zapatilla.image}
-                                        alt={`Zapatilla ${zapatilla.name}`}
-                                        className="img-fluid mb-2"
+                    <Col key={zapatilla.id} className="mb-4">
+                        <div className="m-2">
+                            <Card className="card" style={{ width: '12rem' }}>
+                                <Card.Img variant="top" src={zapatilla.image} />
+                                <Card.Body>
+                                <Card.Title>{zapatilla.marca} {/* Mostrar la marca */} </Card.Title>
+                                    <Card.Title>{zapatilla.name}</Card.Title>
+                                    <Card.Text>
+                                        Size: {zapatilla.size}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Price: ${zapatilla.price}
+                                    </Card.Text>            
+                                    <Card.Text>
+                                        Sold by: {zapatilla.username}
+                                    </Card.Text>
+                                    <OptionsButtom 
+                                        target={zapatilla} 
+                                        onEdit={handleEdit} 
+                                        onDelete={handleDelete} 
+                                        onReport={handleReport} 
                                     />
-                                </div>
-                                <OptionsButtom 
-                                    target={zapatilla} 
-                                    onEdit={handleEdit} 
-                                    onDelete={handleDelete} 
-                                    onReport={handleReport} 
-                                />
-                            </Card.Body>
-                        </Card>
+                                </Card.Body>
+                            </Card>
+                        </div>
                     </Col>
                 ))}
             </Row>

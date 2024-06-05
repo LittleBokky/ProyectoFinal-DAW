@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import '../styles/Profile.css';
 
 const Profile = () => {
+    const [userData, setUserData] = useState([]);
     const [zapatillas, setZapatillas] = useState([]);
     const [username, setUsername] = useState('');
     const [profileImage, setProfileImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState(null);
     const [alertMessage, setAlertMessage] = useState(null);
 
     useEffect(() => {
-        const fetchZapatillas = async () => {
-            try {
-                const response = await fetch('http://localhost:5173/zapatillas');
-                const data = await response.json();
-                setZapatillas(data);
-            } catch (error) {
-                console.error('Error fetching zapatillas:', error);
-            }
-        };
-
-        fetchZapatillas();
         fetchUserProfile();
+        fetchUserZapatillas();
     }, []);
 
     const fetchUserProfile = async () => {
         try {
             const userId = localStorage.getItem('user_id');
-            const response = await fetch(`http://localhost:5173/user/${userId}`);
+            const response = await fetch(`http://localhost:8000/user/${userId}`);
             const data = await response.json();
-            setUsername(data.username);
-            setProfileImageUrl(data.avatar); // Ensure the field matches your backend response
+            setUserData(data);
         } catch (error) {
             console.error('Error fetching user profile:', error);
+            setAlertMessage('Error fetching user profile');
+        }
+    };
+
+    const fetchUserZapatillas = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/zapatillas/zapatillaUsuario`);
+            const data = await response.json();
+            setZapatillas(data);
+        } catch (error) {
+            console.error('Error fetching zapatillas:', error);
         }
     };
 
@@ -121,18 +122,20 @@ const Profile = () => {
                 <Col md={6}>
                     <Card>
                         <Card.Body>
-                            <Card.Title>Welcome, {username}!</Card.Title>
-
-                            {profileImageUrl && (
+                            <div className='profile-info'>
+                            <Card.Title className='profile-title'>Welcome, {userData.username}!</Card.Title>
+                            {userData.avatar && (
                                 <div className="mb-3 text-center">
-                                    <img
-                                        src={profileImageUrl}
-                                        alt="Profile Avatar"
-                                        className="img-fluid rounded-circle"
-                                        style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                                  <img
+                                    src={userData.avatar}
+                                    alt="Profile Avatar"
+                                    className="img-fluid rounded-circle profile-avatar"
+                                    // Añade la clase 'profile-avatar' para hacer la imagen más grande
+                                    style={{ objectFit: 'cover' }}
                                     />
                                 </div>
                             )}
+                        </div> 
                         </Card.Body>
                     </Card>
                 </Col>
@@ -166,30 +169,7 @@ const Profile = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                {zapatillas.map((zapatilla) => (
-                    <Col key={zapatilla.id} md={4} className="mb-4">
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>{zapatilla.name}</Card.Title>
-                                <Card.Text>
-                                    Price: ${zapatilla.price}
-                                </Card.Text>
-                                <div>
-                                    {zapatilla.images.map((image, index) => (
-                                        <img
-                                            key={index}
-                                            src={image}
-                                            alt={`Zapatilla ${zapatilla.name}`}
-                                            className="img-fluid"
-                                        />
-                                    ))}
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            {/* Resto del código */}
         </Container>
     );
 };

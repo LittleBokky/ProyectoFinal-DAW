@@ -1,0 +1,36 @@
+/* OptionsButtom.css */
+
+/* Estilos para el popover de las opciones */
+.popover {
+    background-color: #e6eef5; /* Color de fondo del popover */
+    color: #ffffff; /* Color del texto en el popover */
+    height: 100px;
+    width: 100px; /* Ancho del popover */
+  }
+  
+  /* Estilos para el cuerpo del popover */
+  .popover-body {
+    padding: 8px; /* Añade espacio alrededor del contenido del popover */
+  }
+  
+  /* Estilos para los íconos en el popover */
+  .popover-body p {
+    margin-bottom: 5px; /* Añade espacio entre los íconos */
+  }
+  
+  /* Estilos para los íconos de las opciones */
+  .FlagFill,
+  .PencilSquare,
+  .Trash {
+    margin-right: 8px; /* Añade espacio a la derecha de los íconos */
+    cursor: pointer; /* Cambia el cursor al pasar sobre los íconos */
+    font-size: 14px; /* Ajusta el tamaño del ícono */
+  }
+  
+  /* Estilos para los íconos de las opciones al pasar el mouse */
+  .FlagFill:hover,
+  .PencilSquare:hover,
+  .Trash:hover {
+    color: #dc3545; /* Cambia el color al pasar el mouse */
+  }
+  

@@ -1,0 +1,21 @@
+/* Profile.css */
+
+.profile-avatar {
+    align-items: center;
+    width: 250px; /* Define el ancho deseado para la imagen del avatar */
+    height: 250px; /* Define la altura deseada para la imagen del avatar */
+}
+/* Profile.css */
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 400px; /* Altura del contenedor que contiene el texto "Welcome" */
+}
+
+.profile-title {
+    font-size: 60px; /* Tamaño de fuente más grande para el texto "Welcome" */
+}

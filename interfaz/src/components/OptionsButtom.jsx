@@ -1,5 +1,6 @@
 import React from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import '../styles/OptionsButtom.css';
 import {
   FlagFill,
   PencilSquare,

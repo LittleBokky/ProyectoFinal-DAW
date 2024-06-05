@@ -1,12 +1,14 @@
 import React from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import SellProduct from './SellProduct'; // Asegúrate de tener el componente SellProduct importado
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import '../styles/NavegationBar.css';
+import SellProduct from './SellProduct'; 
 
 const NavigationBar = () => {
     const userSession = localStorage.getItem('userSession');
     const userName = localStorage.getItem('userName');
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogout = () => {
         localStorage.removeItem('userSession');
@@ -17,9 +19,15 @@ const NavigationBar = () => {
         navigate('/login');
     };
 
+    React.useEffect(() => {
+        if (!userSession && location.pathname === '/') {
+            navigate('/login');
+        }
+    }, [userSession, navigate, location]);
+
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="/">
+            <Navbar.Brand as={Link} to="/">
                 <img
                     src="./logo-anteproyecto.png"
                     height="50"
@@ -30,6 +38,7 @@ const NavigationBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
+                    <Nav.Link as={Link} to="/news">News</Nav.Link>
                     {!userSession && (
                         <>
                             <Nav.Link as={Link} to="/login">Login</Nav.Link>
@@ -38,10 +47,10 @@ const NavigationBar = () => {
                     )}
                     {userSession && (
                         <>
-                            <SellProductButton /> {/* Button for opening SellProduct modal */}
-                            <Nav.Link as={Button} onClick={handleLogout} variant="outline-danger">Logout</Nav.Link>
+                            <SellProductButton />
+                            <Nav.Link as={Button} onClick={handleLogout}>Logout</Nav.Link>
                             <Nav.Item className="ml-2">
-                                <Nav.Link as={Link} to="/profile">{userSession}</Nav.Link>
+                            <Nav.Link as={Link} to="/profile">{userSession}</Nav.Link>
                             </Nav.Item>
                         </>
                     )}
@@ -51,7 +60,6 @@ const NavigationBar = () => {
     );
 };
 
-// Separate component for the SellProduct button
 const SellProductButton = () => {
     const [showModal, setShowModal] = React.useState(false);
 

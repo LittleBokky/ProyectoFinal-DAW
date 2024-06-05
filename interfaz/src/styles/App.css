@@ -1,0 +1,15 @@
+/* App.css */
+body {
+    background: linear-gradient(450deg, #063858, #3EACAE); /* Degradado de colores */
+
+    font-family: Arial, sans-serif;
+}
+  
+h1, h2, p {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+  
+.container {
+    padding: 20px;
+}

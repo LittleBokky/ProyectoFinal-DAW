@@ -1,7 +1,7 @@
-// login.jsx
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom"; // Importa Link de react-router-dom
 import { fetchUserDataUsingToken } from "../utils/userUtils";
 
 const Login = () => {
@@ -90,6 +90,9 @@ const Login = () => {
                 <Button variant="primary" type="submit">
                   Log In
                 </Button>
+                <Link to="/register"> {/* Aquí utilizamos Link para redirigir a la página de registro */}
+                  <Button variant="secondary" className="ml-2">Register</Button>
+                </Link>
               </Form>
             </Card.Body>
           </Card>

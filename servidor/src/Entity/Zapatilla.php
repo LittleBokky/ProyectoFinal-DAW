@@ -28,6 +28,12 @@ class Zapatilla
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?int $size = null;
+
+    #[ORM\ManyToOne(inversedBy: 'zapatilla')]
+    private ?Marca $marca = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +83,30 @@ class Zapatilla
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getMarca(): ?Marca
+    {
+        return $this->marca;
+    }
+
+    public function setMarca(?Marca $marca): static
+    {
+        $this->marca = $marca;
 
         return $this;
     }
