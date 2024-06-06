@@ -42,9 +42,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Zapatilla::class, mappedBy: 'user')]
     private Collection $zapatillas;
 
+    /**
+     * @var Collection<int, Favorito>
+     */
+    #[ORM\OneToMany(targetEntity: Favorito::class, mappedBy: 'user')]
+    private Collection $favoritos;
+
     public function __construct()
     {
         $this->zapatillas = new ArrayCollection();
+        $this->favoritos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +165,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($zapatilla->getUser() === $this) {
                 $zapatilla->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorito>
+     */
+    public function getFavoritos(): Collection
+    {
+        return $this->favoritos;
+    }
+
+    public function addFavorito(Favorito $favorito): static
+    {
+        if (!$this->favoritos->contains($favorito)) {
+            $this->favoritos->add($favorito);
+            $favorito->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorito(Favorito $favorito): static
+    {
+        if ($this->favoritos->removeElement($favorito)) {
+            // set the owning side to null (unless already changed)
+            if ($favorito->getUser() === $this) {
+                $favorito->setUser(null);
             }
         }
 

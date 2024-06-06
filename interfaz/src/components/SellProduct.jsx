@@ -96,13 +96,22 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
   return (
     <Modal show={showModal} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Sell Product</Modal.Title>
+        <Modal.Title>¡Vende tus zapatillas!</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formMarca">
+            <Form.Label>Marca</Form.Label>
+            <Form.Control as="select" value={marca} onChange={(e) => setMarca(e.target.value)}>
+              <option value="">Selecciona una marca</option>
+              {marcas.map(marca => (
+                <option key={marca.id} value={marca.id}>{marca.name}</option>
+              ))}
+            </Form.Control>
+          </Form.Group>
           <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Modelo</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter product name"
@@ -112,7 +121,7 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
           </Form.Group>
 
           <Form.Group controlId="formPrice">
-            <Form.Label>Price</Form.Label>
+            <Form.Label>Precio</Form.Label>
             <Form.Control
               type="number"
               placeholder="Enter product price"
@@ -122,7 +131,7 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
           </Form.Group>
 
           <Form.Group controlId="formSize">
-            <Form.Label>Size</Form.Label>
+            <Form.Label>Talla europea</Form.Label>
             <Form.Control
               type="number"
               placeholder="Enter product size"
@@ -131,18 +140,9 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
             />
           </Form.Group>
 
-          <Form.Group controlId="formMarca">
-            <Form.Label>Marca</Form.Label>
-            <Form.Control as="select" value={marca} onChange={(e) => setMarca(e.target.value)}>
-              <option value="">Selecciona una marca</option>
-              {marcas.map(marca => (
-                <option key={marca.id} value={marca.id}>{marca.name}</option>
-              ))}
-            </Form.Control>
-          </Form.Group>
 
           <Form.Group controlId="formImage">
-            <Form.Label>Image</Form.Label>
+            <Form.Label>Imagen</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
@@ -152,10 +152,10 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
 
           <div className="d-flex justify-content-end">
             <Button variant="secondary" onClick={handleClose} className="mr-2">
-              Close
+              Cerrar
             </Button>
             <Button variant="primary" type="submit" disabled={!userData}>
-              List Product
+              ¡Vender!
             </Button>
           </div>
         </Form>

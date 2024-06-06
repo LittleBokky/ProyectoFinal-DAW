@@ -2,10 +2,9 @@
 
 .profile-avatar {
     align-items: center;
-    width: 250px; /* Define el ancho deseado para la imagen del avatar */
-    height: 250px; /* Define la altura deseada para la imagen del avatar */
+    width: 250px; /* Ancho deseado para la imagen del avatar */
+    height: 250px; /* Altura deseada para la imagen del avatar */
 }
-/* Profile.css */
 
 .profile-info {
     display: flex;
@@ -18,4 +17,14 @@
 
 .profile-title {
     font-size: 60px; /* Tamaño de fuente más grande para el texto "Welcome" */
+}
+
+/* Ajustes para hacer más grande el Card y Card.Body de Edit Profile */
+.edit-profile-card {
+    min-width: 400px; /* Ancho mínimo del Card */
+    min-height: 400px; /* Altura mínima del Card */
+}
+
+.edit-profile-card .card-body {
+    padding: 20px; /* Ajustar el relleno del cuerpo del Card */
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,12 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/user/{id}', name: 'get_user_profile', methods: ['GET'])]
     public function getUserProfile(int $id, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -28,54 +35,48 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/update', name: 'update_user_profile', methods: ['POST'])]
-    public function updateUserProfile(
-        int $id,
-        Request $request,
-        EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
-    ): JsonResponse
+    #[Route('/user/{id}/update', name: 'update_user')]
+    public function updateUserData(Request $request, UserRepository $userRepository, int $id): JsonResponse
     {
-        $user = $entityManager->getRepository(User::class)->find($id);
+        $user = $userRepository->find($id);
 
         if (!$user) {
-            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+            throw $this->createNotFoundException('No se encontró un usuario para el ID dado');
         }
 
-        $data = json_decode($request->getContent(), true);
-        $username = $data['username'] ?? null;
-        $avatarBase64 = $data['avatar'] ?? null;
+        // Obtener los datos del cuerpo de la solicitud
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+        $avatar = $request->files->get('avatar');
 
+        // Verificar si se proporcionaron los campos de usuario y contraseña
+        if (!$username && !$password && !$avatar) {
+            return new JsonResponse(['error' => 'At least one field is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Actualizar los campos del usuario si no están vacíos
+        $isUpdated = false;
         if ($username) {
             $user->setUsername($username);
+            $isUpdated = true;
         }
 
-        if ($avatarBase64) {
-            $avatarContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $avatarBase64));
-            $originalFilename = uniqid();
-            $newFilename = $originalFilename . '.png';
-
-            $uploadsDirectory = $this->getParameter('profiles_directory');
-            $filePath = $uploadsDirectory . '/' . $newFilename;
-
-            try {
-                file_put_contents($filePath, $avatarContent);
-                $user->setAvatar('/uploads/profiles/' . $newFilename);
-            } catch (\Exception $e) {
-                return new JsonResponse(['error' => 'Failed to upload avatar'], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
+        if ($avatar) {
+            // Convertir la imagen a base64
+            $avatarBase64 = base64_encode(file_get_contents($avatar->getPathname()));
+            $avatarImage = 'data:' . $avatar->getClientMimeType() . ';base64,' . $avatarBase64;
+            $user->setAvatar($avatarImage);
+            $isUpdated = true;
         }
 
-        try {
-            $entityManager->persist($user);
-            $entityManager->flush();
+        if ($isUpdated) {
+            // Persistir los cambios en la base de datos
+            $this->entityManager->flush();
 
-            return new JsonResponse([
-                'username' => $user->getUsername(),
-                'avatar' => $user->getAvatar(),
-            ]);
-        } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Failed to update profile'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            // Devolver una respuesta JSON indicando que los datos se han actualizado
+            return new JsonResponse(['message' => 'User data updated successfully'], Response::HTTP_OK);
         }
+
+        return new JsonResponse(['error' => 'No data was updated'], Response::HTTP_BAD_REQUEST);
     }
 }

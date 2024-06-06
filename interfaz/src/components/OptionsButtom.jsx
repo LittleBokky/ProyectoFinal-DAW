@@ -11,7 +11,7 @@ import {
 
 const OptionsButtom = ({ target, onEdit, onDelete, onReport, userSession }) => {
   // Recuperar userData del localStorage
-  const userData = localStorage.getItem("userData");
+  const userData = JSON.parse(localStorage.getItem("userData"));
     console.log(target)
   return (
     <OverlayTrigger
@@ -31,7 +31,7 @@ const OptionsButtom = ({ target, onEdit, onDelete, onReport, userSession }) => {
                 Report
               </p>
             )}
-            {userData.id === target.user && (
+            {userData.user === target.username && (
               <>
                 <p>
                   <PencilSquare

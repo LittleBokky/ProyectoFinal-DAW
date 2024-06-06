@@ -38,17 +38,17 @@ const NavigationBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link as={Link} to="/news">News</Nav.Link>
+                    <Nav.Link as={Link} to="/news">Noticias</Nav.Link>
                     {!userSession && (
                         <>
-                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                            <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                            <Nav.Link as={Link} to="/login">Iniciar sesión</Nav.Link>
+                            <Nav.Link as={Link} to="/register">Registrarse</Nav.Link>
                         </>
                     )}
                     {userSession && (
                         <>
                             <SellProductButton />
-                            <Nav.Link as={Button} onClick={handleLogout}>Logout</Nav.Link>
+                            <Nav.Link as={Button} onClick={handleLogout}>Cerrar sesión</Nav.Link>
                             <Nav.Item className="ml-2">
                             <Nav.Link as={Link} to="/profile">{userSession}</Nav.Link>
                             </Nav.Item>

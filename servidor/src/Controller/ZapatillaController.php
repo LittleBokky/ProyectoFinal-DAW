@@ -136,5 +136,7 @@ public function getAllMarcas(EntityManagerInterface $entityManager): Response
 
     return new JsonResponse($data);
 }
+
     
+
 }
