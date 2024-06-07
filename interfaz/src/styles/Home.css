@@ -51,3 +51,33 @@
     padding-right: 10px;
     margin-bottom: 10px;
 }
+
+.search-bar {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-filters {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.search-filters .form-label {
+    font-weight: bold;
+}
+
+.search-filters .form-control {
+    border-radius: 5px;
+}

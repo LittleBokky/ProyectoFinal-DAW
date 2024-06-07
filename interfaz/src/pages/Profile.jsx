@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/Profile.css';
+import Compras from '../components/Compras';
 
 const Profile = () => {
     const [userData, setUserData] = useState([]);
@@ -25,17 +26,13 @@ const Profile = () => {
             setAlertMessage('Error fetching user profile');
         }
     };
+
     const fetchUserZapatillas = async () => {
         try {
-            // Obtener el ID del usuario de la sesión
             const userId = localStorage.getItem('user_id');
-            
-            // Verificar si hay un usuario en sesión
             if (!userId) {
                 throw new Error('No user ID found in session');
             }
-    
-            // Realizar la solicitud incluyendo el ID del usuario en la URL
             const response = await fetch(`http://localhost:8000/user/${userId}/zapatillas`);
             const data = await response.json();
             setZapatillas(data);
@@ -63,10 +60,6 @@ const Profile = () => {
             formData.append('profileImage', profileImage);
         }
 
-        for(const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-
         const userId = localStorage.getItem('user_id');
 
         try {
@@ -92,78 +85,71 @@ const Profile = () => {
     return (
         <Container className="mt-5">
             {alertMessage && <Alert variant="info">{alertMessage}</Alert>}
-            <Row className="mb-5">
-                <Col md={6}>
-                    <Card style={{ minWidth: '400px', minHeight: '400px' }} className="mb-4">
-                        <Card.Body>
-                            <div className='profile-info'>
-                                <Card.Title className='profile-title'>¡Bienvenido {userData.username}!</Card.Title>
-                                {userData.avatar && (
-                                    <div className="mb-3 text-center">
-                                        <img
-                                            src={userData.avatar}
-                                            alt="Profile Avatar"
-                                            className="img-fluid rounded-circle profile-avatar"
-                                            style={{ objectFit: 'cover' }}
-                                        />
-                                    </div>
-                                )}
-                            </div> 
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={6}>
-                    <Card style={{ minWidth: '400px', minHeight: '400px' }} className="mb-4">
-                        <Card.Body>
-                            <Card.Title>Editar perfil</Card.Title>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group controlId="formUsername">
-                                    <Form.Label>Nombre de usuario</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        value={username}
-                                        onChange={handleUsernameChange}
+            <div className="mb-5">
+                <Card style={{ minWidth: '400px', minHeight: '400px' }} className="mb-4">
+                    <Card.Body>
+                        <div className='profile-info'>
+                            <Card.Title className='profile-title'>{userData.username}</Card.Title>
+                            {userData.avatar && (
+                                <div className="mb-3 text-center">
+                                    <img
+                                        src={userData.avatar}
+                                        alt="Profile Avatar"
+                                        className="img-fluid rounded-circle profile-avatar"
+                                        style={{ objectFit: 'cover' }}
                                     />
-                                </Form.Group>
-                                <Form.Group controlId="formProfileImage" className="mt-3">
-                                    <Form.Label>Avatar</Form.Label>
-                                    <Form.Control
-                                        type="file"
-                                        onChange={handleProfileImageChange}
-                                    />
-                                </Form.Group>
-                                <Button variant="primary" type="submit" className="mt-3">Guardar cambios</Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Your Sales</h2>
-                    <Row>
-                        {zapatillas.map((zapatilla) => (
-                            <Col key={zapatilla.id} md={4}>
-                                <Card className="mb-4">
-                                    <Card.Img variant="top" src={zapatilla.image} />
-                                    <Card.Body>
-                                        <Card.Title>{zapatilla.marca}</Card.Title>
-                                        <Card.Title>{zapatilla.name}</Card.Title>
-                                        <Card.Text>
-                                            Price: ${zapatilla.price}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            Size: {zapatilla.size}
-                                        </Card.Text>
-                                        
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </Col>
-            </Row>
+                                </div>
+                            )}
+                        </div>
+                    </Card.Body>
+                </Card>
+                <Card style={{ minWidth: '400px', minHeight: '400px' }} className="mb-4">
+                    <Card.Body>
+                        <Card.Title>Editar perfil</Card.Title>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group controlId="formUsername">
+                                <Form.Label>Nombre de usuario</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={username}
+                                    onChange={handleUsernameChange}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formProfileImage" className="mt-3">
+                                <Form.Label>Avatar</Form.Label>
+                                <Form.Control
+                                    type="file"
+                                    onChange={handleProfileImageChange}
+                                />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" className="mt-3">Guardar cambios</Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </div>
+            <div>
+                <h2>Mis ventas</h2>
+                <div>
+                    {zapatillas.map((zapatilla) => (
+                        <Card key={zapatilla.id} className="mb-4">
+                            <Card.Img variant="top" src={zapatilla.image} />
+                            <Card.Body>
+                                <Card.Title>{zapatilla.marca}</Card.Title>
+                                <Card.Title>{zapatilla.name}</Card.Title>
+                                <Card.Text>
+                                    Price: ${zapatilla.price}
+                                </Card.Text>
+                                <Card.Text>
+                                    Size: {zapatilla.size}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </div>
+                <Compras />
+            </div>
         </Container>
     );
 };
+
 export default Profile;

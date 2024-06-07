@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchUserDataUsingToken } from "../utils/userUtils";
+import Swal from "sweetalert2";
 
 const SellProduct = ({ showModal, handleClose, updateProducts }) => {
   const [name, setName] = useState('');
@@ -24,8 +25,6 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
   };
 
   useEffect(() => {
-    
-
     const fetchMarcas = async () => {
       try {
           const response = await fetch('http://localhost:8000/marcas');
@@ -80,6 +79,11 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
 
       if (response.ok) {
         console.log('Product listed successfully');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Zapatillas en venta!',
+          text: 'Tu producto se ha listado correctamente.',
+        });
         handleClose(); 
         fetchData();
       } else {
@@ -101,7 +105,7 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formMarca">
+          <Form.Group controlId="formMarca">
             <Form.Label>Marca</Form.Label>
             <Form.Control as="select" value={marca} onChange={(e) => setMarca(e.target.value)}>
               <option value="">Selecciona una marca</option>
@@ -139,7 +143,6 @@ const SellProduct = ({ showModal, handleClose, updateProducts }) => {
               onChange={(e) => setSize(e.target.value)}
             />
           </Form.Group>
-
 
           <Form.Group controlId="formImage">
             <Form.Label>Imagen</Form.Label>

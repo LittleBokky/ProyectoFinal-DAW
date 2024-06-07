@@ -2,8 +2,8 @@
 
 .profile-avatar {
     align-items: center;
-    width: 250px; /* Ancho deseado para la imagen del avatar */
-    height: 250px; /* Altura deseada para la imagen del avatar */
+    width: 300px; /* Ancho deseado para la imagen del avatar */
+    height: 300px; /* Altura deseada para la imagen del avatar */
 }
 
 .profile-info {

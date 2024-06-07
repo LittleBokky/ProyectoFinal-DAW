@@ -80,7 +80,7 @@ class ZapatillaController extends AbstractController
         $entityManager->persist($zapatilla);
         $entityManager->flush();
 
-        return new JsonResponse(['message' => 'Zapatilla created successfully'], JsonResponse::HTTP_CREATED);
+        return new JsonResponse(['message' => 'Zapatilla created successfully'], JsonResponse::HTTP_CREATED);   
     }
 
     #[Route('/zapatilla/{id}/delete', name: 'delete_zapatilla', methods: ['DELETE'])]

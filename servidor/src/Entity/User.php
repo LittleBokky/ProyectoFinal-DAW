@@ -48,10 +48,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Favorito::class, mappedBy: 'user')]
     private Collection $favoritos;
 
+    /**
+     * @var Collection<int, Compras>
+     */
+    #[ORM\OneToMany(targetEntity: Compras::class, mappedBy: 'user')]
+    private Collection $compras;
+
     public function __construct()
     {
         $this->zapatillas = new ArrayCollection();
         $this->favoritos = new ArrayCollection();
+        $this->compras = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +202,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($favorito->getUser() === $this) {
                 $favorito->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Compras>
+     */
+    public function getCompras(): Collection
+    {
+        return $this->compras;
+    }
+
+    public function addCompra(Compras $compra): static
+    {
+        if (!$this->compras->contains($compra)) {
+            $this->compras->add($compra);
+            $compra->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompra(Compras $compra): static
+    {
+        if ($this->compras->removeElement($compra)) {
+            // set the owning side to null (unless already changed)
+            if ($compra->getUser() === $this) {
+                $compra->setUser(null);
             }
         }
 
