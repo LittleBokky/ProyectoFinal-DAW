@@ -1,0 +1,60 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Cambia de center a flex-start */
+    height: 80vh; /* Reduce la altura para mover el formulario hacia arriba */
+    margin-top: 5vh; /* Añade un margen superior para centrar mejor */
+}
+
+.login-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.login-card {
+    width: 60%;
+    max-width: 600px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-top: 10vh; /* Añade un margen superior para centrar mejor */
+}
+
+.login-card-body {
+    padding: 2rem;
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-form-group {
+    margin-bottom: 1rem;
+}
+
+.login-form-control {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+

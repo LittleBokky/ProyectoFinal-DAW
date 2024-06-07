@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Favorito;
 use App\Entity\User;
 use App\Entity\Zapatilla;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,4 +56,40 @@ class FavoritoController extends AbstractController
         return new JsonResponse(['success' => true, 'message' => 'Favorito created successfully'], JsonResponse::HTTP_CREATED);
     }
     
+    #[Route('/favorito/get', name: 'get_favorito')]
+    public function getFavoritoByUserId(EntityManagerInterface $entityManager, UserRepository $userRepository, Request $request): JsonResponse
+    {
+        $id = json_decode($request->getContent(), true)['user_id'] ?? null;
+    
+        if (!$id) {
+            return new JsonResponse(['error' => 'User ID is missing'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+    
+        $user = $entityManager->getRepository(User::class)->find($id);
+    
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    
+        $favoritos = $entityManager->getRepository(Favorito::class)->findBy(['user' => $user]);
+        $data = [];
+    
+        foreach ($favoritos as $favorito) {
+            $zapatilla = $favorito->getZapatilla();
+            $data[] = [
+                'id' => $favorito->getId(),
+                'user_id' => $user->getId(),
+                'zapatilla_id' => $zapatilla->getId(),
+                'zapatilla_price' => $zapatilla->getPrice(),
+                'zapatilla_marca' => $zapatilla->getMarca()->getName(),
+                'zapatilla_size' => $zapatilla->getSize(),
+                'zapatilla_name' => $zapatilla->getName(),
+                'zapatilla_image' => $zapatilla->getImage(),
+                'zapatilla_user' => $zapatilla->getUser()->getUsername(),
+            ];
+        }
+    
+        return new JsonResponse($data);
+      
+    }
 }

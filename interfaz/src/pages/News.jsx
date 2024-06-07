@@ -1,11 +1,11 @@
 import React from 'react';
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/News.css';
 
 const News = () => {
   return (
-    <div className="content-container"> {/* Contenedor del contenido */}
+    <Container>
          <nav>
         <ul>
           <li><a href="#nike">Nike</a></li>
@@ -55,21 +55,21 @@ const News = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="../../public/adidas1.jpeg"
+            src="../../public/adidas3.avif"
             alt="First slide"
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="../../public/nike_dn2.png"
+            src="../../public/adidas2.avif"
             alt="Second slide"
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="../../public/nike_dn3.png"
+            src="../../public/adidas4.avif"
             alt="Third slide"
           />
         </Carousel.Item>
@@ -136,7 +136,7 @@ const News = () => {
       </p>
      </section>
 
-    </div>
+    </Container>
   );
 };
 

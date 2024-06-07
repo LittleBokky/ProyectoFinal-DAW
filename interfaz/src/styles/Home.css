@@ -1,16 +1,6 @@
 /* Home.css */
 
-.card {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgb(3, 2, 2);
-    height: 450px; /* Tamaño fijo para todas las tarjetas */
-    width: 12rem; /* Tamaño fijo para todas las tarjetas */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.3s ease;
-    margin: 10px; /* Añadimos un margen entre las tarjetas */
-}
+
 
 .card:hover {
     transform: scale(1.05);
@@ -39,17 +29,6 @@
     flex-grow: 1; /* Permite que el cuerpo de la tarjeta ocupe todo el espacio disponible */
     padding: 10px;
     box-sizing: border-box;
-}
-
-.row {
-    margin-left: -10px; /* Ajustamos el margen para compensar el margen negativo */
-    margin-right: -10px; /* Ajustamos el margen para compensar el margen negativo */
-}
-
-.col {
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom: 10px;
 }
 
 .search-bar {

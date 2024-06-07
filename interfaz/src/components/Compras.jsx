@@ -21,7 +21,7 @@ const Compras = () => {
             <h2>Mis Compras</h2>
             <Row>
                 {compras.map((compra) => (
-                    <Col key={compra.id} md={4} className="mb-4">
+                    <Col xs={4} key={compra.id} md={4} className="mb-4">
                         <Card>
                             <Card.Img variant="top" src={compra.zapatilla_image} />
                             <Card.Body>

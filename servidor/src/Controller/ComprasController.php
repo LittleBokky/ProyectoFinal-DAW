@@ -19,20 +19,20 @@ class ComprasController extends AbstractController
     public function getAllCompras(EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
         $id = json_decode($request->getContent(), true)['user_id'] ?? null;
-        
+
         if (!$id) {
             return new JsonResponse(['error' => 'User ID is missing'], JsonResponse::HTTP_BAD_REQUEST);
         }
-        
+
         $user = $entityManager->getRepository(User::class)->find($id);
-        
+
         if (!$user) {
             return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-        
+
         $compras = $entityManager->getRepository(Compras::class)->findBy(['user' => $user]);
         $data = [];
-        
+
         foreach ($compras as $compra) {
             $zapatilla = $compra->getZapatilla();
             $data[] = [
@@ -47,10 +47,10 @@ class ComprasController extends AbstractController
                 'zapatilla_user' => $zapatilla->getUser()->getUsername()
             ];
         }
-        
+
         return new JsonResponse($data);
     }
-    
+
     #[Route('/compra/new', name: 'app_compras')]
     public function newCompras(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository): JsonResponse
     {
@@ -81,6 +81,44 @@ class ComprasController extends AbstractController
         $entityManager->persist($compra);
         $entityManager->flush();
 
-        return new JsonResponse(['message' => 'Compra created successfully']);
+        // Filtrar las zapatillas disponibles después de la compra
+        $zapatillasDisponibles = $entityManager->getRepository(Zapatilla::class)->findBy(['is_available' => true]);
+
+        return new JsonResponse(['message' => 'Compra created successfully', 'zapatillas_disponibles' => $zapatillasDisponibles]);
     }
+
+    #[Route('/zapatillas/not-bought', name: 'app_zapatillas_not_bought')]
+    public function getAllZapatillasNotBought(EntityManagerInterface $entityManager): JsonResponse
+    {
+        // Obtener todas las zapatillas
+        $allZapatillas = $entityManager->getRepository(Zapatilla::class)->findAll();
+    
+        // Obtener todas las compras
+        $compras = $entityManager->getRepository(Compras::class)->findAll();
+        
+        // Extraer los IDs de las zapatillas compradas
+        $compradasIds = array_map(fn($compra) => $compra->getZapatilla()->getId(), $compras);
+        
+        // Filtrar las zapatillas para obtener las que no han sido compradas
+        $noCompradas = array_filter($allZapatillas, fn($zapatilla) => !in_array($zapatilla->getId(), $compradasIds));
+        
+        // Preparar datos para la respuesta JSON
+        $data = [];
+    
+        foreach ($noCompradas as $zapatilla) {
+            $data[] = [
+                'id' => $zapatilla->getId(),
+                'name' => $zapatilla->getName(),
+                'price' => $zapatilla->getPrice(),
+                'image' => $zapatilla->getImage(),
+                'username' => $zapatilla->getUser()->getUsername(),
+                'size' => $zapatilla->getSize(),
+                'marca' => $zapatilla->getMarca()->getName()
+            ];
+        }
+    
+        return new JsonResponse($data);
+    }
+    
+    
 }

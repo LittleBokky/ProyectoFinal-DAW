@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
+import '../styles/Register.css'; // Importa el archivo CSS para los estilos personalizados
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -34,7 +35,7 @@ const Register = () => {
                     title: 'Registrado',
                     text: 'Usuario registrado correctamente',
                 });
-            } else if (response.status === 409) { // Assuming 409 is the status code for conflict (user already exists)
+            } else if (response.status === 409) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -59,51 +60,55 @@ const Register = () => {
     };
 
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title className="text-center mb-4">Register</Card.Title>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group controlId="formUsername">
-                                    <Form.Label>Username</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter username"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="formPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="formAvatar">
-                                    <Form.Label>Avatar</Form.Label>
-                                    <Form.Control
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleAvatarChange}
-                                    />
-                                </Form.Group>
-
-                                <Button variant="primary" type="submit">
-                                    Register
-                                </Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+        <div className="register-container">
+            <div className="register-row">
+                <div className="register-card">
+                    <div className="register-card-body">
+                        <h2 className="register-title">Registrarse</h2>
+                        <form onSubmit={handleSubmit} method="POST">
+                            <div className="register-form-group">
+                                <label htmlFor="formUsername">Nombre de usuario</label>
+                                <input
+                                    type="text"
+                                    id="formUsername"
+                                    name="username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className="register-form-control"
+                                    placeholder="Enter username"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <label htmlFor="formPassword">Contraseña</label>
+                                <input
+                                    type="password"
+                                    id="formPassword"
+                                    name="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="register-form-control"
+                                    placeholder="Password"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <label htmlFor="formAvatar">Avatar</label>
+                                <input
+                                    type="file"
+                                    id="formAvatar"
+                                    accept="image/*"
+                                    onChange={handleAvatarChange}
+                                    className="register-form-control"
+                                />
+                            </div>
+                            <button type="submit" className="register-button">Registrarse</button>
+                            <Link to="/login">
+                                <button type="button" className="register-button-secondary">¿Tienes cuenta? Inicia sesión aquí</button>
+                            </Link>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

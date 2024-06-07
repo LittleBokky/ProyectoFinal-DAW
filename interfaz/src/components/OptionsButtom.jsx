@@ -1,18 +1,12 @@
 import React from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import '../styles/OptionsButtom.css';
-import {
-  FlagFill,
-  PencilSquare,
-  ThreeDotsVertical,
-  Trash,
-} from "react-bootstrap-icons";
+import { ThreeDotsVertical, Trash } from "react-bootstrap-icons";
 
-
-const OptionsButtom = ({ target, onEdit, onDelete, onReport, userSession }) => {
+const OptionsButtom = ({ target, onDelete }) => {
   // Recuperar userData del localStorage
   const userData = JSON.parse(localStorage.getItem("userData"));
-    console.log(target)
+
   return (
     <OverlayTrigger
       trigger="click"
@@ -20,41 +14,19 @@ const OptionsButtom = ({ target, onEdit, onDelete, onReport, userSession }) => {
       overlay={
         <Popover id="popover-positioned-left">
           <Popover.Body>
-            {userSession && (
+            {userData.user === target.username && (
               <p>
-                <FlagFill
+                <Trash
+                  alt="Remove"
+                  height={20}
+                  style={{ cursor: "pointer" }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onReport(target);
+                    onDelete(target.id);
                   }}
                 />{" "}
-                Report
+                Borrar
               </p>
-            )}
-            {userData.user === target.username && (
-              <>
-                <p>
-                  <PencilSquare
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEdit(target);
-                    }}
-                  />{" "}
-                  Edit
-                </p>
-                <p>
-                  <Trash
-                    alt="Remove"
-                    height={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(target.id);
-                    }}
-                  />{" "}
-                  Delete
-                </p>
-              </>
             )}
           </Popover.Body>
         </Popover>
@@ -66,4 +38,3 @@ const OptionsButtom = ({ target, onEdit, onDelete, onReport, userSession }) => {
 };
 
 export default OptionsButtom;
-

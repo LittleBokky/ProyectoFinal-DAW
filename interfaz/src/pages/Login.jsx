@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom"; // Importa Link de react-router-dom
 import { fetchUserDataUsingToken } from "../utils/userUtils";
+import "../styles/Login.css"; // Importa el archivo CSS
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -62,43 +62,43 @@ const Login = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Card>
-            <Card.Body>
-              <Card.Title className="text-center mb-4">Log In</Card.Title>
-              <Form onSubmit={handleSubmit} method="POST">
-                <Form.Group className="mb-3" controlId="formUsername">
-                  <Form.Label>Username:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>Password:</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                  Log In
-                </Button>
-                <Link to="/register"> {/* Aquí utilizamos Link para redirigir a la página de registro */}
-                  <Button variant="secondary" className="ml-2">Register</Button>
-                </Link>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className="login-container">
+      <div className="login-row">
+        <div className="login-card">
+          <div className="login-card-body">
+            <h2 className="login-title">Iniciar Sesión</h2>
+            <form onSubmit={handleSubmit} method="POST">
+              <div className="login-form-group">
+                <label htmlFor="formUsername">Nombre de usuario:</label>
+                <input
+                  type="text"
+                  id="formUsername"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className="login-form-control"
+                />
+              </div>
+              <div className="login-form-group">
+                <label htmlFor="formPassword">Contraseña:</label>
+                <input
+                  type="password"
+                  id="formPassword"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="login-form-control"
+                />
+              </div>
+              <button type="submit" className="login-button">Iniciar sesión</button>
+              <Link to="/register">
+                <button type="button" className="login-button">¿No tienes cuenta? Registrate aqui</button>
+              </Link>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
