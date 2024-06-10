@@ -1,0 +1,33 @@
+/* sellproduct.css */
+
+.modal-header {
+    background-color: #007bff; /* Cambia el color de fondo del encabezado del modal */
+    color: #fff; /* Cambia el color del texto del encabezado del modal */
+  }
+  
+  .modal-body {
+    padding: 20px; /* Añade relleno al cuerpo del modal */
+  }
+  
+  .form-label {
+    font-weight: bold; /* Hace que las etiquetas del formulario sean negritas */
+  }
+  
+  .form-control {
+    margin-bottom: 15px; /* Añade margen inferior a los controles del formulario */
+  }
+  
+  .form-control-file {
+    margin-bottom: 15px; /* Añade margen inferior al control de archivo */
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d; /* Cambia el color de fondo del botón secundario */
+    border-color: #6c757d; /* Cambia el color del borde del botón secundario */
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268; /* Cambia el color de fondo del botón secundario al pasar el mouse */
+    border-color: #545b62; /* Cambia el color del borde del botón secundario al pasar el mouse */
+  }
+  

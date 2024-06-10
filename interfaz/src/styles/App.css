@@ -1,0 +1,27 @@
+/* App.css */
+body {
+    background: linear-gradient(450deg, #063858, #3EACAE); /* Degradado de colores */
+    font-family: Arial, sans-serif;
+    min-height: 100vh; /* Hace que el cuerpo ocupe al menos toda la altura de la ventana */
+    margin: 0; /* Elimina el margen predeterminado */
+    display: flex;
+    flex-direction: column;
+}
+h1, h2, p {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+.container {
+    padding: 20px;
+}
+
+/* App.css */
+.footer {
+    width: 100%;
+    bottom: 0;
+    position: fixed; /* Hace que el footer sea fijo en la parte inferior */
+    left: 0;
+    background-color: #333; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    padding: 1px 0; /* Espaciado interno reducido aún más */
+}
