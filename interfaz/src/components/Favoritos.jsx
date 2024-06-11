@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Card, ListGroup, Row, Col, Button, Modal } from 'react-bootstrap';
 import { newCompras } from '../utils/comprasUtils';
+import { BagPlus, BagPlusFill, Shop, Trash } from 'react-bootstrap-icons';
 
 const Favoritos = () => {
     const [favoritos, setFavoritos] = useState([]);
@@ -127,7 +128,7 @@ const Favoritos = () => {
                         return null;
                     }
                     return (
-                        <Col xs={4} key={favorito.id}>
+                        <Col xs={6} md={4} key={favorito.id}>
                             <Card className="mb-4">
                                 <Card.Img variant="top" src={favorito.zapatilla_image} />
                                 <Card.Body>
@@ -137,16 +138,22 @@ const Favoritos = () => {
                                     </Card.Text>
                                 </Card.Body>
                                 <ListGroup className="list-group-flush">
-                                    <ListGroup.Item>Precio: ${favorito.zapatilla_price}</ListGroup.Item>
+                                    <ListGroup.Item>Precio: {favorito.zapatilla_price}€</ListGroup.Item>
                                     <ListGroup.Item>Talla: {favorito.zapatilla_size}</ListGroup.Item>
                                     <ListGroup.Item>Vendido por: {favorito.zapatilla_user}</ListGroup.Item>
                                 </ListGroup>
-                                <Button variant="danger" onClick={() => removeFromFavoritos(favorito.zapatilla_id)}>
-                                    Eliminar de favoritos
-                                </Button>
-                                <Button variant="primary" onClick={() => handleBuy(favorito)}>
-                                    Comprar
-                                </Button>
+                               <Row className='justify-content-between' style={{ margin: '10px' }}>
+                                    <Col>
+                                        <Button variant="danger" onClick={() => removeFromFavoritos(favorito.zapatilla_id)}>
+                                            <Trash/> 
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Button variant="primary" onClick={() => handleBuy(favorito)}>
+                                            <BagPlusFill/> 
+                                        </Button>
+                                    </Col>
+                               </Row>
                             </Card>
                         </Col>
                     );
@@ -161,9 +168,9 @@ const Favoritos = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <p>Marca: {selectedZapatilla.zapatilla_marca}</p>
-                        <p>Nombre: {selectedZapatilla.zapatilla_name}</p>
+                        <p>Modelo: {selectedZapatilla.zapatilla_name}</p>
                         <p>Talla: {selectedZapatilla.zapatilla_size}</p>
-                        <p>Precio: ${selectedZapatilla.zapatilla_price}</p>
+                        <p>Precio: {selectedZapatilla.zapatilla_price}€</p>
                         <p>Vendido por: {selectedZapatilla.zapatilla_user}</p>
                     </Modal.Body>
                     <Modal.Footer>

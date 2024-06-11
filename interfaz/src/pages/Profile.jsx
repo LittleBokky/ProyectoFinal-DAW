@@ -166,30 +166,30 @@ const Profile = () => {
           <br />
           <Row>
             <Col xs={12}>
-            <Container>
-            <h2>Mis ventas</h2>
-              <Row className="align-items-center">
-                {zapatillas.map((zapatilla) => (
-                  <Col xs={4} key={zapatilla.id}>
-                    <Card className="mb-4">
-                      <Card.Img variant="top" src={zapatilla.image} />
-                      <Card.Body>
-                        <Card.Title>{zapatilla.marca}</Card.Title>
-                        <Card.Title>{zapatilla.name}</Card.Title>
-                        <ListGroup className="list-group-flush">
-                          <ListGroup.Item>
-                            Precio: {zapatilla.price}
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                            Talla: {zapatilla.size}
-                          </ListGroup.Item>
-                        </ListGroup>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </Container>
+              <Container>
+                <h2>Mis ventas</h2>
+                <Row className="align-items-center">
+                  {zapatillas.map((zapatilla) => (
+                    <Col xs={6} key={zapatilla.id}>
+                      <Card className="mb-4">
+                        <Card.Img variant="top" src={zapatilla.image} />
+                        <Card.Body>
+                          <Card.Title>{zapatilla.marca}</Card.Title>
+                          <Card.Title>{zapatilla.name}</Card.Title>
+                          <ListGroup className="list-group-flush">
+                            <ListGroup.Item>
+                              Precio: {zapatilla.price}€
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                              Talla: {zapatilla.size}
+                            </ListGroup.Item>
+                          </ListGroup>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
             </Col>
           </Row>
           <br />

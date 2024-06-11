@@ -15,7 +15,7 @@ import {
   deleteZapatilla,
   reportZapatilla,
 } from "../utils/zapatillaUtils";
-import { Heart, HeartFill } from "react-bootstrap-icons";
+import { BagPlusFill, Heart, HeartFill } from "react-bootstrap-icons";
 import { newCompras } from "../utils/comprasUtils";
 import { newFavorito } from "../utils/favoritoUtils"; // Importar la función newFavorito
 import "../styles/Home.css";
@@ -53,16 +53,8 @@ const Home = () => {
     fetchZapatillas();
   }, []);
 
-  const handleEdit = (zapatilla) => {
-    editZapatilla(zapatilla);
-  };
-
   const handleDelete = (zapatillaId) => {
     deleteZapatilla(zapatillaId);
-  };
-
-  const handleReport = (zapatilla) => {
-    reportZapatilla(zapatilla.id);
   };
 
   const handleBuy = (zapatilla) => {
@@ -209,7 +201,7 @@ const Home = () => {
       </Row>
       <Row className="justify-content-center">
         {filteredZapatillas.map((zapatilla) => (
-          <Col xs={4} lg={3} key={zapatilla.id} className="mb-4">
+          <Col xs={6} lg={3} key={zapatilla.id} className="mb-4">
             <Card className="card" style={{ width: "11rem" }}>
               <Card.Img
                 variant="top"
@@ -244,7 +236,7 @@ const Home = () => {
               </Card.Body>
               <Card.Footer>
                 <Row className="align-items-center">
-                  <Col xs={4} className="mb-3">
+                  <Col xs={4} className="mb-0">
                 {
                   userData.user !== zapatilla.username && (
                     <Button
@@ -267,8 +259,8 @@ const Home = () => {
                       <Button
                         variant="primary"
                         onClick={() => handleBuy(zapatilla)}
-                      >
-                        Comprar
+                      > 
+                      <BagPlusFill style={{ cursor: "pointer" }} /> 
                       </Button>
                     )}
                   </Col>
