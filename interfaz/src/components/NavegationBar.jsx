@@ -68,7 +68,7 @@ const SellProductButton = () => {
 
     return (
         <>
-            <Nav.Link as={Button} onClick={handleShow}>Sell Product</Nav.Link>
+            <Nav.Link as={Button} onClick={handleShow}>Vender</Nav.Link>
             <SellProduct showModal={showModal} handleClose={handleClose} />
         </>
     );

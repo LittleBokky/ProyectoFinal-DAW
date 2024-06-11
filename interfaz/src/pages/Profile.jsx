@@ -70,7 +70,7 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("username", username);
     if (profileImage) {
-      formData.append("profileImage", profileImage);
+      formData.append("avatar", profileImage);
     }
 
     const userId = localStorage.getItem("user_id");

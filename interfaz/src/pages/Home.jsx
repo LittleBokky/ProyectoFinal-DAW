@@ -15,7 +15,7 @@ import {
   deleteZapatilla,
   reportZapatilla,
 } from "../utils/zapatillaUtils";
-import { Heart } from "react-bootstrap-icons";
+import { Heart, HeartFill } from "react-bootstrap-icons";
 import { newCompras } from "../utils/comprasUtils";
 import { newFavorito } from "../utils/favoritoUtils"; // Importar la función newFavorito
 import "../styles/Home.css";
@@ -35,10 +35,14 @@ const Home = () => {
 
   useEffect(() => {
     const fetchZapatillas = async () => {
+      const formData = new FormData;
+      formData.append("user_id", userData.id)
       try {
         const response = await fetch(
-          "http://localhost:8000/zapatillas/not-bought"
-        );
+          "http://localhost:8000/zapatillas/not-bought", {
+            method: "POST",
+            body: formData,
+          });
         const data = await response.json();
         setZapatillas(data);
       } catch (error) {
@@ -80,8 +84,19 @@ const Home = () => {
     }
   };
 
-  const handleLike = async (zapatilla_id) => {
-    await newFavorito(zapatilla_id);
+  const handleLike = async (zapatilla_id, currentLikedStatus) => {
+    try {
+      const liked = !currentLikedStatus;
+      await newFavorito(zapatilla_id, liked);
+
+      const updatedZapatillas = zapatillas.map((zapatilla) =>
+        zapatilla.id === zapatilla_id ? { ...zapatilla, liked } : zapatilla
+      );
+
+      setZapatillas(updatedZapatillas);
+    } catch (error) {
+      console.error("Error handling like:", error);
+    }
   };
 
   const filteredZapatillas = zapatillas.filter((zapatilla) => {
@@ -127,7 +142,7 @@ const Home = () => {
       </Row>
       <Row className="search-filters">
         <Col md={3}>
-        <Form.Group>
+          <Form.Group>
             <Form.Label>
               Filtrar por <br />
               talla:
@@ -195,60 +210,71 @@ const Home = () => {
       <Row className="justify-content-center">
         {filteredZapatillas.map((zapatilla) => (
           <Col xs={4} lg={3} key={zapatilla.id} className="mb-4">
-              <Card className="card" style={{ width: "11rem" }}>
-                <Card.Img
-                  variant="top"
-                  src={zapatilla.image}
-                  onClick={() => {
-                    setSelectedImage(zapatilla.image);
-                    setShowModal(true);
-                  }}
-                />
-                <Card.Body>
-                  <Row>
-                    <Col xs={9}>
-                      <Card.Title>{zapatilla.marca}</Card.Title>
-                    </Col>
-                    <Col xs={3}>
-                      <OptionsButtom
-                        target={zapatilla}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        onReport={handleReport}
-                      />
-                    </Col>
-                  </Row>
-                  <Card.Title>{zapatilla.name}</Card.Title>
-                  <ListGroup className="list-group-flush">
-                    <ListGroup.Item>Precio: {zapatilla.price}</ListGroup.Item>
-                    <ListGroup.Item>Talla: {zapatilla.size}</ListGroup.Item>
-                    <ListGroup.Item>
-                      Vendido por: {zapatilla.username}
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Card.Body>
-                <Card.Footer>
-                  <Row className="align-items-center">
-                    <Col className="mb-3">
-                      <Heart
-                        onClick={() => handleLike(zapatilla.id)}
-                        style={{ cursor: "pointer" }}
-                      />{" "}
-                      Like!
-                    </Col>
-                    <Col className="mb-0">
-                      {userData.user !== zapatilla.username && (
-                        <Button
-                          variant="primary"
-                          onClick={() => handleBuy(zapatilla)}
-                        >
-                          Comprar
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </Card.Footer>
-              </Card>
+            <Card className="card" style={{ width: "11rem" }}>
+              <Card.Img
+                variant="top"
+                src={zapatilla.image}
+                onClick={() => {
+                  setSelectedImage(zapatilla.image);
+                  setShowModal(true);
+                }}
+              />
+              <Card.Body>
+                <Row>
+                  <Col xs={9}>
+                    <Card.Title>{zapatilla.marca}</Card.Title>
+                  </Col>
+                  <Col xs={3}>
+                   {userData.user === zapatilla.username && (
+                     <OptionsButtom
+                     target={zapatilla}
+                     onDelete={handleDelete}
+                   />
+                   )}
+                  </Col>
+                </Row>
+                <Card.Title>{zapatilla.name}</Card.Title>
+                <ListGroup className="list-group-flush">
+                  <ListGroup.Item>Precio: {zapatilla.price}€</ListGroup.Item>
+                  <ListGroup.Item>Talla: {zapatilla.size}</ListGroup.Item>
+                  <ListGroup.Item>
+                    Vendido por: {zapatilla.username}
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Body>
+              <Card.Footer>
+                <Row className="align-items-center">
+                  <Col xs={4} className="mb-3">
+                {
+                  userData.user !== zapatilla.username && (
+                    <Button
+                    variant="outline-primary"
+                    onClick={() => handleLike(zapatilla.id)}
+                  >
+                    {zapatilla.liked ? (
+                      <>
+                        <HeartFill style={{ cursor: "pointer" }} /> Like!
+                      </>
+                    ) : (
+                      <Heart style={{ cursor: "pointer" }} />
+                    )}
+                  </Button>
+                  )
+                }
+                  </Col>
+                  <Col xs={4} className="mb-0">
+                    {userData.user !== zapatilla.username && (
+                      <Button
+                        variant="primary"
+                        onClick={() => handleBuy(zapatilla)}
+                      >
+                        Comprar
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+              </Card.Footer>
+            </Card>
           </Col>
         ))}
       </Row>

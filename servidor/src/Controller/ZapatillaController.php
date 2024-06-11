@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Favorito;
 use App\Entity\User;
 use App\Entity\Zapatilla;
 use App\Entity\Marca;
@@ -13,26 +14,42 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ZapatillaController extends AbstractController
 {
-    #[Route('/zapatillas', name: 'get_zapatillas', methods: ['GET'])]
-    public function getAllZapatillas(EntityManagerInterface $entityManager): JsonResponse
+    #[Route('/zapatillas', name: 'get_zapatillas', methods: ['POST'])]
+    public function getAllZapatillas(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
+        // Obtener el ID del usuario desde los parámetros de form-data
+        $userId = $request->request->get('user_id');
+        if (!$userId) {
+            return new JsonResponse(['error' => 'User ID is required'], Response::HTTP_BAD_REQUEST);
+        }
+    
         $zapatillas = $entityManager->getRepository(Zapatilla::class)->findAll();
+        $favoritoRepository = $entityManager->getRepository(Favorito::class);
         $data = [];
-
+    
         foreach ($zapatillas as $zapatilla) {
+            // Comprobar si el usuario ha dado like a la zapatilla
+            $liked = $favoritoRepository->findOneBy([
+                'zapatilla' => $zapatilla->getId(),
+                'user' => $userId
+            ]) !== null;
+    
             $data[] = [
                 'id' => $zapatilla->getId(),
                 'name' => $zapatilla->getName(),
                 'price' => $zapatilla->getPrice(),
                 'size' => $zapatilla->getSize(), // Agregado el tamaño
-                'username' => $zapatilla->getUser()->getUsername(),     
+                'username' => $zapatilla->getUser()->getUsername(),
                 'image' => $zapatilla->getImage(),
-                'marca' => $zapatilla->getMarca()->getName()
+                'marca' => $zapatilla->getMarca()->getName(),
+                'liked' => $liked // Agregar el estado de like
             ];
         }
-
+    
         return new JsonResponse($data);
     }
+    
+    
 
     #[Route('/sell', name: 'add_zapatilla', methods: ['POST'])]
     public function addZapatilla(Request $request, EntityManagerInterface $entityManager): JsonResponse

@@ -92,4 +92,40 @@ class FavoritoController extends AbstractController
         return new JsonResponse($data);
       
     }
+
+
+    #[Route('/favorito/remove', name: 'remove_favorito')]
+    public function remove(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (is_null($data) || !isset($data['user_id']) || !isset($data['zapatilla_id'])) {
+            return new JsonResponse(['error' => 'Invalid input'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user_id = $data['user_id'];
+        $zapatilla_id = $data['zapatilla_id'];
+
+        $user = $entityManager->find(User::class, $user_id);
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $zapatilla = $entityManager->find(Zapatilla::class, $zapatilla_id);
+        if (!$zapatilla) {
+            return new JsonResponse(['error' => 'Zapatilla not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $favoritoRepository = $entityManager->getRepository(Favorito::class);
+        $existingFavorito = $favoritoRepository->findOneBy(['user' => $user, 'zapatilla' => $zapatilla]);
+
+        if (!$existingFavorito) {
+            return new JsonResponse(['error' => 'Favorito not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($existingFavorito);
+        $entityManager->flush();
+
+        return new JsonResponse(['success' => true, 'message' => 'Favorito removed successfully']);
+    }
 }

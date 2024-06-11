@@ -119,6 +119,5 @@ class ComprasController extends AbstractController
     
         return new JsonResponse($data);
     }
-    
-    
+
 }
