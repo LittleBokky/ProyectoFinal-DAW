@@ -4,7 +4,7 @@
 .popover {
     background-color: #e6eef5; /* Color de fondo del popover */
     color: #ffffff; /* Color del texto en el popover */
-    height: 100px;
+    height: 50px;
     width: 100px; /* Ancho del popover */
   }
   
